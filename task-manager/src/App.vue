@@ -2,7 +2,7 @@
   <div id="app">
     <b-navbar toggleable="md" type="dark" variant="dark">
       <b-container>
-        <b-navbar-brand :to="{name: 'home'}">Tareas</b-navbar-brand>
+        <b-navbar-brand :to="{name: 'home'}">Task-Manager</b-navbar-brand>
         
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
