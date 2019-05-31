@@ -7,6 +7,7 @@
       variant="light"
       class="btn-outline-success btn-block"
     >Nueva tarea</b-button>
+
     <b-collapse id="collapse-1" class="mt-2">
       <b-card header="Llenar TODOS los campos">
         <b-row>
@@ -27,31 +28,55 @@
           </b-col>
         </b-row>
         <br>
-        <b-button v-b-toggle.collapse-1 
-        variant="success" class="btn-block" v-if="comprobarCampos" @click="limpiarCampos">Crear</b-button>
+        <b-button variant="success" class="btn-block" v-if="comprobarCampos" @click="addTask">Crear</b-button>
       </b-card>
     </b-collapse>
+
     <hr>
+    <br>
+    <b-table
+      small
+      borderless
+      outlined
+      hover
+      selectable
+      @row-selected="rowSelected"
+      select-mode="single"
+      :items="tareas"
+    ></b-table>
+
+    <b-modal hide-footer id="modal-1" title="Task-Manager">
+      <p class="my-4">Deseas eliminar la tarea?</p>
+      <p class="my-4">{{ selected }}</p>
+      <b-button
+        variant="light"
+        class="btn-outline-danger btn-block"
+      >Eliminar tarea</b-button>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "manage",
   data() {
     return {
-      nuevaD: "",
-      nuevaF: "",
-      nuevaP: "",
       descripcion: "",
       fecha: "",
       prioridad: "",
+      tareas: [],
+      selected: [],
       prioridades: [
         { value: "Baja", text: "Baja" },
         { value: "Media", text: "Media" },
         { value: "Alta", text: "Alta" }
       ]
     };
+  },
+  mounted() {
+    this.getAll();
   },
   computed: {
     comprobarFecha() {
@@ -74,14 +99,63 @@ export default {
       }
       return true;
     }
-  }, 
+  },
   methods: {
     limpiarCampos() {
-      this.descripcion = ""
-      this.fecha = ""
-      this.prioridad = ""
-      this.$root.$emit('bv::toggle::collapse', 'collapse-1')
+      this.descripcion = "";
+      this.fecha = "";
+      this.prioridad = "";
+      this.$root.$emit("bv::toggle::collapse", "collapse-1");
+    },
+
+    formatDate(date) {
+      var str = date.toString().split("T");
+      return str[0];
+    },
+
+    getAll() {
+      this.tareas = [];
+      var url = "http://localhost:3000/tasks/";
+      axios
+        .get(url)
+        .then(response => {
+          console.log(response);
+          var data = response.data;
+          data.forEach(element => {
+            element.fecha = this.formatDate(element.fecha);
+            this.tareas.push(element);
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    addTask() {
+      var url = "http://localhost:3000/tasks/";
+      var data = {
+        id: "t" + Math.round(Math.random() * 100) + "k" + Math.round(Math.random() * 10),
+        descripcion: this.descripcion,
+        fecha: this.fecha,
+        prioridad: this.prioridad
+      };
+      axios
+        .post(url, data)
+        .then(response => {
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .then(() => {
+          this.getAll();
+          this.limpiarCampos();
+        });
+    },
+
+    rowSelected(items) {
+      this.selected = items;
+      this.$bvModal.show('modal-1')
     }
-  },
+  }
 };
 </script>
