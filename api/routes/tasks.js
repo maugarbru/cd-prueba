@@ -6,10 +6,9 @@ var app = express.Router()
 //Arreglo de tareas
 var tasks = []
 
-const service = require('../services/tasks').create()
 const controller = require('../controllers/tasks').create()
 
-// Definir ruta para obtener todas las tareas
+// Obtener todas las tareas
 app.get('/tasks/', function (req, res) {
     controller.getAll().then(response => {
         //RETORNO EL ARRAY DE TAREAS
@@ -19,11 +18,27 @@ app.get('/tasks/', function (req, res) {
     })
 })
 
-/**
- * CREAR TAREA
- * REQ: SOLICITUD -> BODY (Es la tarea que voy a registrar)
- * RES: RESPUESTA -> LE VOY A RETORNAR LA TAREAS QUE HAY AGREGADAS
- */
+// Obtener tareas sin cumplir
+app.get('/tasks/completadas/false', function (req, res) {
+    controller.getSinCumplir().then(response => {
+        //RETORNO EL ARRAY DE TAREAS
+        res.status(200).send(response)
+    }).catch(error => {
+        console.log(error);
+    })
+})
+
+// Obtener tareas cumplidas
+app.get('/tasks/completadas/true', function (req, res) {
+    controller.getCumplidas().then(response => {
+        //RETORNO EL ARRAY DE TAREAS
+        res.status(200).send(response)
+    }).catch(error => {
+        console.log(error);
+    })
+})
+
+// Añadir tarea
 app.post('/tasks/', (req, res) => {
     let body = req.body
     //Capturo la respuesa de la insercion a la base de datos

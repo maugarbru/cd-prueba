@@ -32,6 +32,16 @@ class Task {
         return tasks
     }
 
+    async getSinCumplir() {
+        let tasks = await service.getSinCumplir()
+        return tasks
+    }
+
+    async getCumplidas() {
+        let tasks = await service.getCumplidas()
+        return tasks
+    }
+
     async getOne(id) {
         return await service.getOne(id)
     }

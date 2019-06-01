@@ -40,6 +40,18 @@ class Task {
         return response
     }
 
+    async getSinCumplir() {
+        let sql = `SELECT * FROM public.tasks WHERE completada=false`;
+        let response = await pg.executeRows(sql)
+        return response
+    }
+
+    async getCumplidas() {
+        let sql = `SELECT * FROM public.tasks WHERE completada=true`;
+        let response = await pg.executeRows(sql)
+        return response
+    }
+
     async getOne(id) {
         let sql = `SELECT * FROM public.tasks WHERE id=${id}`;
         let response = await pg.executeRows(sql)
