@@ -1,4 +1,3 @@
-
 const service = require('../services/tasks').create()
 
 module.exports = {
@@ -19,8 +18,8 @@ class Task {
         return await service.insert(id, descripcion, fecha, prioridad)
     }
 
-    async update(id, name, active) {
-        //Validar si existe
+    async update(id) {
+        return await service.update(id)
     }
 
     async delete(id) {
@@ -41,9 +40,4 @@ class Task {
         let tasks = await service.getCumplidas()
         return tasks
     }
-
-    async getOne(id) {
-        return await service.getOne(id)
-    }
-
 }

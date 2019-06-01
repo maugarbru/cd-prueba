@@ -21,10 +21,10 @@ class Task {
         return response
     }
 
-   async update(id, completada) {
+   async update(id) {
       let sql = `UPDATE public.tasks
-        SET completada=${completada}
-        WHERE id=${id}`
+        SET completada=true
+        WHERE id='${id}'`
         return await pg.execute(sql)
     }
 
@@ -48,12 +48,6 @@ class Task {
 
     async getCumplidas() {
         let sql = `SELECT * FROM public.tasks WHERE completada=true`;
-        let response = await pg.executeRows(sql)
-        return response
-    }
-
-    async getOne(id) {
-        let sql = `SELECT * FROM public.tasks WHERE id=${id}`;
         let response = await pg.executeRows(sql)
         return response
     }

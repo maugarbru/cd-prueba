@@ -27,7 +27,12 @@
           select-mode="multi"
           :items="tareasSinCumplir"
         ></b-table>
-        <b-button variant="info" class="btn-block" v-if="selected.length != 0">Marcar como cumplidas</b-button>
+        <b-button
+          variant="info"
+          class="btn-block"
+          v-if="selected.length != 0"
+          @click="editTasks"
+        >Marcar como cumplidas</b-button>
         <br>
       </b-col>
       <b-col>
@@ -123,7 +128,27 @@ export default {
     },
 
     editTasks() {
-      
+      if (this.selectedIDs.length != 0) {
+        this.selectedIDs.forEach(element => {
+          var data = {
+            id: element
+          };
+          var url = `http://localhost:3000/tasks/${data.id}`;
+          axios
+            .put(url, data)
+            .then(response => {})
+            .catch(error => {
+              console.log(error);
+            })
+            .then(() => {
+              this.getAll();
+            });
+          this.tareasSinCumplir = [];
+          this.tareasCumplidas = [];
+          this.selectedIDs = [];
+          this.showAlert();
+        });
+      }
     }
   }
 };
