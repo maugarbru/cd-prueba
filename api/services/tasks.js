@@ -29,19 +29,19 @@ class Task {
     }
 
     async delete(id) {
-        let sql = `DELETE FROM tasks WHERE id=${id}`;
+        let sql = `DELETE FROM public.tasks WHERE id='${id}'`;
         let response = await pg.execute(sql)
         return response
     }
 
     async getAll() {
-        let sql = `SELECT * FROM tasks`;
+        let sql = `SELECT * FROM public.tasks`;
         let response = await pg.executeRows(sql)
         return response
     }
 
     async getOne(id) {
-        let sql = `SELECT * FROM tasks WHERE id=${id}`;
+        let sql = `SELECT * FROM public.tasks WHERE id=${id}`;
         let response = await pg.executeRows(sql)
         return response
     }

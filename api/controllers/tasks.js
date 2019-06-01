@@ -24,10 +24,7 @@ class Task {
     }
 
     async delete(id) {
-        let tasks = await service.getAll()
-        if (!tasks.find(id)) {
-            return await service.delete(id)
-        }
+        return await service.delete(id)
     }
 
     async getAll() {

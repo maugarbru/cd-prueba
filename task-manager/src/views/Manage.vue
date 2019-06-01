@@ -31,26 +31,43 @@
         <b-button variant="success" class="btn-block" v-if="comprobarCampos" @click="addTask">Crear</b-button>
       </b-card>
     </b-collapse>
-
     <hr>
+    
+    <b-alert
+      :show="dismissCountDown"
+      dismissible
+      variant="danger"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="countDownChanged"
+    >Tarea eliminada!</b-alert>
+    <b-alert
+      :show="dismissCountDown2"
+      dismissible
+      variant="success"
+      @dismissed="dismissCountDown2=0"
+      @dismiss-count-down="countDownChanged2"
+    >Tarea creada!</b-alert>
     <br>
+
+    <small>Haz click en una tarea para eliminarla</small>
     <b-table
       small
       borderless
       outlined
       hover
       selectable
+      selectedVariant="success"
       @row-selected="rowSelected"
       select-mode="single"
       :items="tareas"
     ></b-table>
-
     <b-modal hide-footer id="modal-1" title="Task-Manager">
       <p class="my-4">Deseas eliminar la tarea?</p>
-      <p class="my-4">{{ selected }}</p>
+      <p class="my-4">Tarea: {{ selectedDesc }}</p>
       <b-button
         variant="light"
         class="btn-outline-danger btn-block"
+        @click="deleteTask"
       >Eliminar tarea</b-button>
     </b-modal>
   </div>
@@ -68,6 +85,11 @@ export default {
       prioridad: "",
       tareas: [],
       selected: [],
+      selectedID: "",
+      selectedDesc: "",
+      dismissSecs: 1,
+      dismissCountDown: 0,
+      dismissCountDown2: 0,
       prioridades: [
         { value: "Baja", text: "Baja" },
         { value: "Media", text: "Media" },
@@ -108,6 +130,22 @@ export default {
       this.$root.$emit("bv::toggle::collapse", "collapse-1");
     },
 
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+
+    countDownChanged2(dismissCountDown2) {
+      this.dismissCountDown2 = dismissCountDown2;
+    },
+
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
+    },
+
+    showAlert2() {
+      this.dismissCountDown2 = this.dismissSecs;
+    },
+
     formatDate(date) {
       var str = date.toString().split("T");
       return str[0];
@@ -119,7 +157,6 @@ export default {
       axios
         .get(url)
         .then(response => {
-          console.log(response);
           var data = response.data;
           data.forEach(element => {
             element.fecha = this.formatDate(element.fecha);
@@ -134,15 +171,18 @@ export default {
     addTask() {
       var url = "http://localhost:3000/tasks/";
       var data = {
-        id: "t" + Math.round(Math.random() * 100) + "k" + Math.round(Math.random() * 10),
+        id:
+          "t" +
+          Math.round(Math.random() * 100) +
+          "k" +
+          Math.round(Math.random() * 100),
         descripcion: this.descripcion,
         fecha: this.fecha,
         prioridad: this.prioridad
       };
       axios
         .post(url, data)
-        .then(response => {
-        })
+        .then(response => {})
         .catch(error => {
           console.log(error);
         })
@@ -150,11 +190,36 @@ export default {
           this.getAll();
           this.limpiarCampos();
         });
+      this.showAlert2();
     },
 
-    rowSelected(items) {
-      this.selected = items;
-      this.$bvModal.show('modal-1')
+    rowSelected(tareas) {
+      this.selected = tareas;
+      if (this.selected.length != 0) {
+        this.selectedID = this.selected[0].id;
+        this.selectedDesc = this.selected[0].descripcion;
+        this.$bvModal.show("modal-1");
+      }
+    },
+
+    deleteTask() {
+      var data = {
+        id: this.selectedID
+      };
+      var url = `http://localhost:3000/tasks/${data.id}`;
+      axios
+        .delete(url, data)
+        .then(response => {})
+        .catch(error => {
+          console.log(error);
+        })
+        .then(() => {
+          this.getAll();
+        });
+      this.selectedID = "";
+      this.selectedDesc = "";
+      this.$bvModal.hide("modal-1");
+      this.showAlert();
     }
   }
 };
