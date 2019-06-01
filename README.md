@@ -12,9 +12,9 @@ Luego, en una terminal, en la ruta de la carpeta del projecto, ejecutar:
 ```
 cd api
 npm i
-node index.js
+node index.js o nodemon index.js
 ```
-Luego volviendo a la ruta original `cd ..`, ejecutar:
+En otra terminal, en la ruta del proyecto, ejecutar:
 
 ```
 cd task-manager
