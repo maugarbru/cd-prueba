@@ -16,13 +16,14 @@
         <h3 class="text-center">Tareas sin cumplir</h3>
         <small>Ordenado por fecha. Seleccionar para marcar como cumplidas</small>
         <b-table
+          class="table-info"
           small
           borderless
           outlined
           hover
           sort-by="fecha"
           selectable
-          selectedVariant="info"
+          selectedVariant="success"
           @row-selected="rowSelected"
           select-mode="multi"
           :items="tareasSinCumplir"
@@ -38,7 +39,15 @@
       <b-col>
         <h3 class="text-center">Tareas cumplidas</h3>
         <small>Ordenado por fecha.</small>
-        <b-table small borderless outlined hover sort-by="fecha" :items="tareasCumplidas"></b-table>
+        <b-table
+          class="table-success"
+          small
+          borderless
+          outlined
+          hover
+          sort-by="fecha"
+          :items="tareasCumplidas"
+        ></b-table>
       </b-col>
     </b-row>
   </div>
@@ -60,7 +69,8 @@ export default {
     };
   },
   mounted() {
-    this.getAll();
+    this.getTareasSinCumplir();
+    this.getTareasCumplidas();
   },
   methods: {
     showAlert() {
@@ -88,18 +98,13 @@ export default {
       }
     },
 
-    getAll() {
-      this.getTareasSinCumplir();
-      this.getTareasCumplidas();
-    },
-
     getTareasSinCumplir() {
-      this.tareasSinCumplir = [];
       var url = "http://localhost:3000/tasks/completadas/false";
       axios
         .get(url)
         .then(response => {
           var data = response.data;
+          this.tareasSinCumplir = [];
           data.forEach(element => {
             element.fecha = this.formatDate(element.fecha);
             this.tareasSinCumplir.push(element);
@@ -111,12 +116,12 @@ export default {
     },
 
     getTareasCumplidas() {
-      this.tareasCumplidas = [];
       var url = "http://localhost:3000/tasks/completadas/true";
       axios
         .get(url)
         .then(response => {
           var data = response.data;
+          this.tareasCumplidas = [];
           data.forEach(element => {
             element.fecha = this.formatDate(element.fecha);
             this.tareasCumplidas.push(element);
@@ -140,10 +145,12 @@ export default {
             .catch(error => {
               console.log(error);
             })
-            .then(() => {});
+            .then(() => {
+              this.getTareasSinCumplir();
+              this.getTareasCumplidas();
+            });
         });
         this.selectedIDs = [];
-        this.getAll();
         this.showAlert();
       }
     }

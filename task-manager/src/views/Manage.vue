@@ -52,12 +52,13 @@
     <small>Ordenado por fecha. Haga click en una tarea para eliminarla</small>
     <b-table
       small
+      class="bg-light"
       borderless
       outlined
       hover
       sort-by="fecha"
       selectable
-      selectedVariant="success"
+      selectedVariant="danger"
       @row-selected="rowSelected"
       select-mode="single"
       :items="tareas"
