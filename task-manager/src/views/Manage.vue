@@ -32,7 +32,7 @@
       </b-card>
     </b-collapse>
     <hr>
-    
+
     <b-alert
       :show="dismissCountDown"
       dismissible
@@ -49,12 +49,13 @@
     >Tarea creada!</b-alert>
     <br>
 
-    <small>Haz click en una tarea para eliminarla</small>
+    <small>Ordenado por fecha. Haga click en una tarea para eliminarla</small>
     <b-table
       small
       borderless
       outlined
       hover
+      sort-by="fecha"
       selectable
       selectedVariant="success"
       @row-selected="rowSelected"
