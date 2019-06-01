@@ -140,14 +140,11 @@ export default {
             .catch(error => {
               console.log(error);
             })
-            .then(() => {
-              this.getAll();
-            });
-          this.tareasSinCumplir = [];
-          this.tareasCumplidas = [];
-          this.selectedIDs = [];
-          this.showAlert();
+            .then(() => {});
         });
+        this.selectedIDs = [];
+        this.getAll();
+        this.showAlert();
       }
     }
   }

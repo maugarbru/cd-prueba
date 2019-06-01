@@ -21,6 +21,17 @@ cd task-manager
 npm i
 npm run serve
 ```
-
 ### Listo!
 Ingresar a la app en [http://localhost:8080/](http://localhost:8080/)
+Las tablas estarán vacías. Debes ir a la página de `Administrar` para crear nuevas y poderlas ver en las tablas.
+
+### Funcionalidades de la app
+1. La pantalla inicial (`Ver - Home`) muestra las tareas sin cumplir y cumplidas. En la tabla sin cumplir se pueden seleccionar las tareas para convertirlas en cumplidas.
+2. En la pantalla de `Administrar` se muestra la lista general de las tareas creadas. Se pueden crear nuevas tareas y al seleccionar de la tabla, pueden eliminarse.
+3. La pantalla de `Acerca` muestra la informacion del desarrollador.
+
+### Características de la app
+* SPA - Single Page Application
+* Responsive
+
+
