@@ -62,7 +62,7 @@ export default {
     return {
       selected: [],
       selectedIDs: [],
-      dismissSecs: 1,
+      dismissSecs: 2,
       dismissCountDown: 0,
       tareasSinCumplir: [],
       tareasCumplidas: []

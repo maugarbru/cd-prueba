@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="dark">
+    <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-container>
         <b-navbar-brand :to="{name: 'home'}">Task-Manager</b-navbar-brand>
         

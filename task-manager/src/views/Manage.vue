@@ -53,7 +53,6 @@
     <b-table
       small
       class="bg-light"
-      borderless
       outlined
       hover
       sort-by="fecha"
@@ -89,7 +88,7 @@ export default {
       selected: [],
       selectedID: "",
       selectedDesc: "",
-      dismissSecs: 1,
+      dismissSecs: 2,
       dismissCountDown: 0,
       dismissCountDown2: 0,
       prioridades: [
